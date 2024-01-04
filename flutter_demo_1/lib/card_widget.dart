@@ -57,7 +57,7 @@ class CardWidget extends StatelessWidget {
             ),
             title: Text(name),
             subtitle: Text(lastName),
-            trailing: Icon(Icons.delete),
+            trailing: Icon(Icons.call),
           ),
         ),
         Divider(),
