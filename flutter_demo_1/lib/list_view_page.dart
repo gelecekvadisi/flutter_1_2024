@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'kisi.dart';
 
@@ -21,23 +22,11 @@ class ListViewPage extends StatelessWidget {
         // reverse: true,
         itemBuilder: (context, index) {
           Kisi kisi = kisiListesi[index];
-          return Card(
-            color: index % 2 == 0 ? Colors.white : Colors.grey,
-            child: ListTile(
-              title: Text(kisi.name),
-              subtitle: Text(kisi.surName),
-              leading: CircleAvatar(
-                child: Text(kisi.id),
-              ),
-            ),
-          );
+          return _buildPersonCard(index, kisi);
         },
         separatorBuilder: (context, index) {
           if ((index+1)%14 == 0) {
-            return Container(
-              height: 300,
-              color: Colors.red,
-            );
+            return _buildSeperetor();
           } else {
             return SizedBox();
           }
@@ -45,6 +34,34 @@ class ListViewPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Container _buildSeperetor() {
+    return Container(
+            height: 300,
+            color: Colors.red,
+          );
+  }
+
+  Card _buildPersonCard(int index, Kisi kisi) {
+    return Card(
+          color: index % 2 == 0 ? Colors.white : Colors.grey,
+          child: ListTile(
+            title: Text(kisi.name),
+            subtitle: Text(kisi.surName),
+            leading: CircleAvatar(
+              child: Text(kisi.id),
+            ),
+            onTap: (){
+              if (index %2 ==0) {
+                EasyLoading.instance.backgroundColor = Colors.red;
+              } else {
+                EasyLoading.instance.backgroundColor = Colors.black;
+              }
+              EasyLoading.showToast(kisi.name);
+            },
+          ),
+        );
   }
 
   ListView listViewWithBuilder() {
@@ -67,7 +84,16 @@ class ListViewPage extends StatelessWidget {
     );
   }
 
-  ListView rehberListView() {
+  Widget rehberListView() {
+    /* return SingleChildScrollView(
+      child: Column(
+        children: kisiListesi
+          .map((kisi) =>
+              buildCard(name: kisi.name, lastName: kisi.surName, id: kisi.id))
+          .toList(),
+      ),
+    ); */
+
     return ListView(
       children: kisiListesi
           .map((kisi) =>
@@ -79,7 +105,7 @@ class ListViewPage extends StatelessWidget {
   /* ListView listView() {
     return ListView(
       children: [
-        buildCard("Furkan", "Yağmur"),
+            buildCard("Furkan", "Yağmur"),
             buildCard("Vural", "Bozkurt"),
             buildCard("Erhan", "Gökçeoğlu"),
             buildCard("Furkan", "Yağmur"),

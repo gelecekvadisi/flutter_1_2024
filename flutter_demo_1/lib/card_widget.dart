@@ -60,7 +60,10 @@ class CardWidget extends StatelessWidget {
             trailing: Icon(Icons.call),
           ),
         ),
-        Divider(),
+        Divider(
+          // color: Colors.red,
+          // thickness: 5,
+        ),
       ],
     );
   }
