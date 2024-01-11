@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_1/grid_view_page.dart';
 import 'package:flutter_demo_1/list_view_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      home: ListViewPage(),
+      home: GridViewPage(),
       builder: EasyLoading.init(),
     );
   }
