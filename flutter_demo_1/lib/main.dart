@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_1/custom_scroll_view_page.dart';
 import 'package:flutter_demo_1/grid_view_page.dart';
-import 'package:flutter_demo_1/list_view_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'odev10/person.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      home: GridViewPage(),
+      home: CustomScrollViewPage(),
       builder: EasyLoading.init(),
     );
   }
