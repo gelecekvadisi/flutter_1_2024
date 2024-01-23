@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_1/odev10/person.dart';
 
+import 'green_page.dart';
+
 class RedPage extends StatelessWidget {
   RedPage({super.key});
 
@@ -41,17 +43,18 @@ class RedPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.redAccent,
           title: Text("RedPage"),
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
         ),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              _buildGreenPageButton(context),
               ElevatedButton(
                   onPressed: () {
                     price = 100 + (Random().nextDouble() * 100);
 
-                    /// 100 <= price < 200
+                    /// 100 <= price < 200-
                     print("Ücret: $price");
                     bool canPop = Navigator.canPop(context);
                     Navigator.maybePop(
@@ -66,6 +69,23 @@ class RedPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  ElevatedButton _buildGreenPageButton(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.greenAccent, foregroundColor: Colors.white),
+      onPressed: () async {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GreenPage(),
+          ),
+          (route) => false,
+        );
+      },
+      child: Text("Navigate to GreenPage with Material"),
     );
   }
 }

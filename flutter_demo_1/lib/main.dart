@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_1/custom_scroll_view_page.dart';
 import 'package:flutter_demo_1/grid_view_page.dart';
+import 'package:flutter_demo_1/routes.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'navigator_demos/home_page.dart';
@@ -49,7 +50,15 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
-      home: HomePage(),
+      routes: Routes.routeMap,
+      onUnknownRoute: (context) => MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: Center(
+            child: Text("Sayfa bulunamadı!"),
+          ),
+        ),
+      ),
+      // home: HomePage(),
     );
   }
 }
