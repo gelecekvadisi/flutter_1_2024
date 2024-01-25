@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
                   foregroundColor: Colors.white),
               onPressed: () async {
                 Person? person = await Navigator.of(context).push<Person>(
-                    MaterialPageRoute(builder: (context) => RedPage()));
+                    MaterialPageRoute(builder: (context) => RedPage(price: 0,)));
                 debugPrint(
                     "Ana sayfada kişi adı: ${person?.name ?? "Kişi bulunamadı"}");
               },
@@ -36,8 +36,8 @@ class HomePage extends StatelessWidget {
                   backgroundColor: Colors.redAccent,
                   foregroundColor: Colors.white),
               onPressed: () {
-                Navigator
-                    .push<Person>(context, CupertinoPageRoute(builder: (context) => RedPage()));
+                Navigator.push<Person>(context,
+                    CupertinoPageRoute(builder: (context) => RedPage(price: 0,)));
               },
               child: Text("Navigate to RedPage with Cupertino"),
             ),
@@ -58,14 +58,11 @@ class HomePage extends StatelessWidget {
                   backgroundColor: Colors.redAccent,
                   foregroundColor: Colors.white),
               onPressed: () async {
-                
-
-
-                Navigator.pushNamed(context, "/redPage");
-
-
-
-
+                Navigator.pushNamed(
+                  context,
+                  "/redPage",
+                  arguments: 100,
+                );
               },
               child: Text("Navigate to RedPage with Material and named routes"),
             ),

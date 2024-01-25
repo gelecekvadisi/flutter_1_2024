@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_1/custom_scroll_view_page.dart';
 import 'package:flutter_demo_1/grid_view_page.dart';
+import 'package:flutter_demo_1/navigator_demos/green_page.dart';
 import 'package:flutter_demo_1/routes.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -46,11 +47,11 @@ class MyApp extends StatelessWidget {
       );
     } */
 
-    return MaterialApp(
+    /* return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
-      routes: Routes.routeMap,
+      //routes: Routes.routeMap,
       onUnknownRoute: (context) => MaterialPageRoute(
         builder: (context) => Scaffold(
           body: Center(
@@ -59,6 +60,13 @@ class MyApp extends StatelessWidget {
         ),
       ),
       // home: HomePage(),
+    ); */
+
+    return MaterialApp(
+      title: 'Material App',
+      debugShowCheckedModeBanner: false,
+      builder: EasyLoading.init(),
+      onGenerateRoute: Routes.onGenerateRoute,
     );
   }
 }

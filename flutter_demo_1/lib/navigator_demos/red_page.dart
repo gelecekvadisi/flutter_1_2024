@@ -2,16 +2,24 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_1/odev10/person.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'green_page.dart';
 
 class RedPage extends StatelessWidget {
-  RedPage({super.key});
+  RedPage({super.key, required this.price});
 
   double price = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    /* var arguments = ModalRoute.of(context)?.settings.arguments;
+    if (arguments != null) {
+      EasyLoading.showToast("Sayfa argümanlarıı: $arguments");
+    } */
+
+    EasyLoading.showToast("Ödenecek tutar: $price");
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
