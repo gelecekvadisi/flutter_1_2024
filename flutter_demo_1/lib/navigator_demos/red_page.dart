@@ -14,10 +14,10 @@ class RedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    /* var arguments = ModalRoute.of(context)?.settings.arguments;
+    var arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null) {
       EasyLoading.showToast("Sayfa argümanlarıı: $arguments");
-    } */
+    }
 
     EasyLoading.showToast("Ödenecek tutar: $price");
     return PopScope(
@@ -85,6 +85,7 @@ class RedPage extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.greenAccent, foregroundColor: Colors.white),
       onPressed: () async {
+        // Navigator.popUntil(context, (route) => false);
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

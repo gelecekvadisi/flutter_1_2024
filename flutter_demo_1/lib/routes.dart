@@ -14,13 +14,15 @@ class Routes {
   };
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    Widget page = const Scaffold();
+    Widget page = const Scaffold(
+      backgroundColor: Colors.blue,
+    );
 
     int yetkiId = 0;
 
     
 
-    if (settings.name == "/") {
+    if (settings.name == "/" || settings.name == "/homePage") {
       page = const HomePage();
     } else if (settings.name == "/redPage") {
       double price = double.tryParse("Furkan 100 Tl ödedi.") ?? 0;
