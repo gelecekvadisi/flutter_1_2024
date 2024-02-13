@@ -1,10 +1,17 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-class FormFieldPage extends StatelessWidget {
+class FormFieldPage extends StatefulWidget {
   FormFieldPage({super.key});
 
+  @override
+  State<FormFieldPage> createState() => _FormFieldPageState();
+}
+
+class _FormFieldPageState extends State<FormFieldPage> {
   String userName = "", email = "", password = "";
+
+  bool passwordVisibility = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -18,7 +25,7 @@ class FormFieldPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: AutovalidateMode.disabled,
           child: Column(
             children: [
               TextFormField(
@@ -59,7 +66,6 @@ class FormFieldPage extends StatelessWidget {
                   // bool isValidate = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$").hasMatch(value!);
                   bool isValidate = EmailValidator.validate(value!);
 
-
                   if (value.isEmpty) {
                     return "E-Mail alanı boş geçilemez.";
                   } else if (!isValidate) {
@@ -77,7 +83,18 @@ class FormFieldPage extends StatelessWidget {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                    labelText: "Parola", border: OutlineInputBorder()),
+                  labelText: "Parola",
+                  border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        passwordVisibility = !passwordVisibility;
+                      });
+
+                    },
+                    icon: Icon(passwordVisibility ? Icons.visibility_off : Icons.visibility),
+                  ),
+                ),
                 validator: (value) {
                   if (value!.length < 6) {
                     return "Parolanız en az 6 karakter uzunluğunda olmalıdır.";
@@ -88,6 +105,8 @@ class FormFieldPage extends StatelessWidget {
                 onSaved: (value) {
                   password = value!;
                 },
+                obscureText: !passwordVisibility,
+                obscuringCharacter: "•",
               ),
               SizedBox(
                 height: 16,
