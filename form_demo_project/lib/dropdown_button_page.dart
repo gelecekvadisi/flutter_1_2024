@@ -25,33 +25,39 @@ class _DropdownButtonPageState extends State<DropdownButtonPage> {
         title: Text("Dropdown Button Page"),
       ),
       body: Center(
-        child: DropdownButton<int>(
-          /* items: const [
-            DropdownMenuItem<int>(child: Text("İstanbul"), value: 34,),
-            DropdownMenuItem<int>(child: Text("Ankara"), value: 6,),
-            DropdownMenuItem<int>(child: Text("Bursa"), value: 16,),
-            DropdownMenuItem<int>(child: Text("İstanbul"), value: 35,),
-            DropdownMenuItem<int>(child: Text("Ankara"), value: 7,),
-            DropdownMenuItem<int>(child: Text("Bursa"), value: 17,),
-          ], */
-          /* items: sehirler
-              .map(
-                (e) => DropdownMenuItem<int>(
-                  child: Text(e),
-                  value: sehirler.indexOf(e),
-                ),
-              )
-              .toList(), */
-          items: menuItemList(),
-          value: secilenSehir,
-          hint: Text("Şehir seçiniz..."),
-          isExpanded: false,
-          menuMaxHeight: 200,
-          onChanged: (value) {
-            setState(() {
-              secilenSehir = value;
-            });
-          },
+        child: Card(
+          elevation: 20,
+          color: Colors.blue,
+          child: DropdownButton<int>(
+            /* items: const [
+              DropdownMenuItem<int>(child: Text("İstanbul"), value: 34,),
+              DropdownMenuItem<int>(child: Text("Ankara"), value: 6,),
+              DropdownMenuItem<int>(child: Text("Bursa"), value: 16,),
+              DropdownMenuItem<int>(child: Text("İstanbul"), value: 35,),
+              DropdownMenuItem<int>(child: Text("Ankara"), value: 7,),
+              DropdownMenuItem<int>(child: Text("Bursa"), value: 17,),
+            ], */
+            /* items: sehirler
+                .map(
+                  (e) => DropdownMenuItem<int>(
+                    child: Text(e),
+                    value: sehirler.indexOf(e),
+                  ),
+                )
+                .toList(), */
+            items: menuItemList(),
+            value: secilenSehir,
+            hint: Text("Şehir seçiniz..."),
+            isExpanded: false,
+            elevation: 100,
+            underline: Container(),
+            padding: EdgeInsets.all(8),
+            onChanged: (value) {
+              setState(() {
+                secilenSehir = value;
+              });
+            },
+          ),
         ),
       ),
     );
