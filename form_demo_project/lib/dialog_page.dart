@@ -10,6 +10,7 @@ class DialogPage extends StatefulWidget {
 
 class _DialogPageState extends State<DialogPage> {
   DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,20 @@ class _DialogPageState extends State<DialogPage> {
               ),
             ),
             Text(_getSelectedDateText()),
+            ElevatedButton(
+              onPressed: () {
+                _selectTime();
+              },
+              child: Text("Saat Seç"),
+            ),
+            // if (selectedTime != null)
+              Visibility(
+                visible: selectedTime != null,
+                child: Text(
+                    "${selectedTime?.hour ?? "00"}:${selectedTime?.minute ?? "00"}"),
+              ),
+            Divider(),
+            for (int i = 0; i < 10; i++) Text(i.toString()),
           ],
         ),
       ),
@@ -51,8 +66,9 @@ class _DialogPageState extends State<DialogPage> {
     if (selectedDate == null) {
       return "Tarih seçilmedi.";
     } else {
-      return DateFormat(DateFormat.YEAR_MONTH_DAY  /* "dd MMMM yyyy" */, "tr").format(selectedDate!);
-      
+      return DateFormat(DateFormat.YEAR_MONTH_DAY /* "dd MMMM yyyy" */, "tr")
+          .format(selectedDate!);
+
       // return selectedDate;
     }
   }
@@ -81,7 +97,7 @@ class _DialogPageState extends State<DialogPage> {
     DateTime firstDate = DateTime(1900);
     DateTime lastDate = DateTime.now();
 
-    selectedDate = await showDatePicker(
+    DateTime? tempDate = await showDatePicker(
       context: context,
       firstDate: firstDate,
       lastDate: lastDate,
@@ -90,12 +106,26 @@ class _DialogPageState extends State<DialogPage> {
       // barrierColor: Colors.green,
     );
 
-    setState(() {});
-
-    if (selectedDate == null) {
+    if (tempDate != null) {
+      setState(() {
+        selectedDate = tempDate;
+      });
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Tarih alınamadı.")),
       );
     }
+  }
+
+  void _selectTime() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      hourLabelText: "Saat seç",
+    ).then((value) {
+      setState(() {
+        selectedTime = value;
+      });
+    });
   }
 }
