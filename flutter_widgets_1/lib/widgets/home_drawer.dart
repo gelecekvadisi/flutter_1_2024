@@ -10,6 +10,7 @@ class HomeDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: [
+          // DrawerHeader(child: Container()),
           UserAccountsDrawerHeader(
             accountName: const Text("Furkan Yağmur"),
             accountEmail: const Text("furkan@gmail.com"),

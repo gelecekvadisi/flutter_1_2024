@@ -17,9 +17,12 @@ class _HomePageState extends State<HomePage> {
   int selectedBottomIndex = 0;
 
   List<Widget> pageList = [
-    CameraPage(),
-    FeedPage(),
-    SearchPage(),
+    // CameraPage(),
+    // FeedPage(),
+    // SearchPage(),
+    CameraPage(key: PageStorageKey("camera_page")),
+    FeedPage(key: PageStorageKey("feed_page"),),
+    SearchPage(key: PageStorageKey("search_page"),),
   ];
 
   @override
@@ -29,6 +32,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home Page'),
       ),
       drawer: const HomeDrawer(),
+      // endDrawer: const HomeDrawer(),
       bottomNavigationBar: _buildBottomNavBar(),
       body: pageList[selectedBottomIndex],
     );
