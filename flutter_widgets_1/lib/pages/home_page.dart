@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widgets_1/pages/camera_page.dart';
 import 'package:flutter_widgets_1/pages/feed_page.dart';
 import 'package:flutter_widgets_1/pages/search_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/home_drawer.dart';
 

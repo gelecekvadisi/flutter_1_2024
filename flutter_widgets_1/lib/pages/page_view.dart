@@ -53,6 +53,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
+                    // _pageController.nextPage(duration:  Duration(milliseconds: 1000), curve: Curves.easeInCubic);
                     currentPage++;
                     _pageController.jumpToPage(currentPage);
                   },

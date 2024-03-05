@@ -1,0 +1,44 @@
+[
+    {
+        "adSoyad": "Furkan Yağmur",
+        "yas": 25,
+        "mezunMu": true,
+        "aldigiDersler": [
+            "Mat 1",
+            "Mat 2",
+            "Mat 3",
+            "Sayısal Analiz",
+            "Fizik",
+            "Lineer Cebir"
+        ],
+        "erkekMi": true,
+        "danisman": null,
+        "gno": 3.14
+    },
+    {
+        "adSoyad": "Osman Yağmur",
+        "yas": 20,
+        "mezunMu": false,
+        "aldigiDersler": [
+            "Mat 1",
+            "Fizik",
+            "Lineer Cebir"
+        ],
+        "erkekMi": true,
+        "danisman": "Prof. Dr. Orhan Torkul",
+        "gno": 3.24
+    },
+    {
+        "adSoyad": "Kerem Yağmur",
+        "yas": 21,
+        "mezunMu": true,
+        "aldigiDersler": [
+            "Mat 1",
+            "Fizik",
+            "Lineer Cebir"
+        ],
+        "erkekMi": true,
+        "danisman": null,
+        "gno": 3.5
+    }
+]
