@@ -11,41 +11,51 @@ class TabBarPage extends StatefulWidget {
   State<TabBarPage> createState() => _TabBarPageState();
 }
 
-class _TabBarPageState extends State<TabBarPage> with SingleTickerProviderStateMixin {
+class _TabBarPageState extends State<TabBarPage>
+    with SingleTickerProviderStateMixin {
   List<Widget> pageList = [
-                CameraPage(),
-                FeedPage(key: PageStorageKey("feed_page"),),
-                SearchPage(),
-              ];
+    CameraPage(),
+    FeedPage(
+      key: PageStorageKey("feed_page"),
+    ),
+    SearchPage(),
+  ];
 
-  late TabController _tabController = TabController(length: 3, vsync: this);
-  
-  @override
-  void initState() {
-    _tabController = TabController(length: pageList.length, vsync: this);
-    _tabController.addListener(() {
-      setState(() {});
-    });
-  }
-  
+  // late TabController _tabController;
+
+  // @override
+  // void initState() {
+  //   _tabController = TabController(length: pageList.length, vsync: this);
+  //   _tabController.addListener(() {
+  //     setState(() {});
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Tab Bar Page"),
-        bottom: TabBar(
-          controller: _tabController,
-          // onTap: (index) {
-          //   setState(() {});
-          // },
-          tabs: [
-            Tab(child: Text("Kamera Sayfası")),
-            Tab(child: Text("Ana Sayfa")),
-            Tab(child: Text("Arama Sayfası")),
-          ],
+    return DefaultTabController(
+      length: pageList.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Tab Bar Page"),
+          bottom: TabBar(
+            // controller: _tabController,
+            // onTap: (index) {
+            //   setState(() {});
+            // },
+            tabs: [
+              Tab(child: Text("Kamera Sayfası")),
+              Tab(child: Text("Ana Sayfa")),
+              Tab(child: Text("Arama Sayfası")),
+            ],
+          ),
+        ),
+        // body: pageList[_tabController.index],
+        body: TabBarView(
+          children: pageList,
+          // controller: _tabController,
         ),
       ),
-      body: pageList[_tabController.index],
     );
   }
 }
