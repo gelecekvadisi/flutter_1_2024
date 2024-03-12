@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Json Deneme"),
       ),
-      body: FutureBuilder<List<Ogrenci>>(
+      body: FutureBuilder(
         future: verilerOku(context),
         builder: (context, snapshot) {
           // if(snapshot.connectionState == ConnectionState.done)
