@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:local_data_app/model/enums.dart';
+import 'package:local_data_app/model/user_model.dart';
+import 'package:local_data_app/service/secure_storage_service.dart';
+import 'package:local_data_app/service/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataPage extends StatefulWidget {
@@ -14,11 +18,26 @@ class _DataPageState extends State<DataPage> {
   String renk = "Kırmızı";
   List<Sehir> sehirler = [];
   bool mezunMu = false;
+  SecureStorageService service = SecureStorageService();
 
   @override
   void initState() {
     super.initState();
-    deneme();
+
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      // mezunMu = true;
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text("content")));
+      // setState(() {});
+      
+      var user = await service.readUser();
+      _nameController.text = user.name;
+      renk = user.renk;
+      sehirler = user.sehirler;
+      mezunMu = user.mezunMu;
+      setState(() {});
+
+    });
   }
 
   @override
@@ -55,7 +74,16 @@ class _DataPageState extends State<DataPage> {
             },
           ),
           ElevatedButton(
-            onPressed: saveUser,
+            onPressed: () {
+              service.saveUser(
+                UserModel(
+                  name: _nameController.text,
+                  renk: renk,
+                  sehirler: sehirler,
+                  mezunMu: mezunMu,
+                ),
+              );
+            },
             child: Text("Kaydet"),
           ),
         ],
@@ -92,16 +120,6 @@ class _DataPageState extends State<DataPage> {
     );
   }
 
-  saveUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String name = _nameController.text;
-    preferences.setString("isim", name);
-    preferences.setString("renk", renk);
-    preferences.setStringList("sehirler", sehirler.map((e) => e.name).toList());
-    preferences.setBool("mezunMu", mezunMu);
-    debugPrint("Veriler Kaydedildi!");
-  }
-  
   void deneme() async {
     final preferences = await SharedPreferences.getInstance();
     preferences.setString("name", "Furkan");
