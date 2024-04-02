@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:local_data_app/service/locale_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/enums.dart';
 import '../model/user_model.dart';
 
-class SharedPreferencesService {
+class SharedPreferencesService extends LocaleStorageService {
+  @override
   saveUser(UserModel user) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("isim", user.name);
@@ -15,6 +17,7 @@ class SharedPreferencesService {
     debugPrint("Veriler Kaydedildi!");
   }
 
+  @override
   Future<UserModel> readUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String name = preferences.getString("isim") ?? "";

@@ -1,10 +1,29 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_data_app/page/data_page.dart';
+import 'package:local_data_app/page/hive_demo_page.dart';
+import 'package:local_data_app/service/file_storage_service.dart';
+import 'package:local_data_app/service/locale_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(const MyApp());
+import 'service/shared_preferences_service.dart';
+
+GetIt locator = GetIt.instance;
+
+setupLocator() {
+  locator.registerSingleton<LocaleStorageService>(FileStorageService());
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
+  await Hive.initFlutter();
+  await Hive.openBox("test");
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,15 +38,29 @@ class MyApp extends StatelessWidget {
             title: const Text('Lokal Veri Uygulamaları'),
           ),
           body: Center(
-            child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(builderContext).push(
-                    MaterialPageRoute(
-                      builder: (context) => DataPage(),
-                    ),
-                  );
-                },
-                child: Text("Navigate to data page")),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(builderContext).push(
+                        MaterialPageRoute(
+                          builder: (context) => DataPage(),
+                        ),
+                      );
+                    },
+                    child: Text("Navigate to data page")),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(builderContext).push(
+                        MaterialPageRoute(
+                          builder: (context) => HiveDemoPage(),
+                        ),
+                      );
+                    },
+                    child: Text("Navigate to Hive Demo Page")),
+              ],
+            ),
           ),
         );
       }),

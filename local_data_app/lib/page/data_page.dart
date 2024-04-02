@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:local_data_app/main.dart';
 import 'package:local_data_app/model/enums.dart';
 import 'package:local_data_app/model/user_model.dart';
+import 'package:local_data_app/service/file_storage_service.dart';
+import 'package:local_data_app/service/locale_storage_service.dart';
 import 'package:local_data_app/service/secure_storage_service.dart';
 import 'package:local_data_app/service/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +21,7 @@ class _DataPageState extends State<DataPage> {
   String renk = "Kırmızı";
   List<Sehir> sehirler = [];
   bool mezunMu = false;
-  SecureStorageService service = SecureStorageService();
+  LocaleStorageService service = locator<LocaleStorageService>();
 
   @override
   void initState() {
