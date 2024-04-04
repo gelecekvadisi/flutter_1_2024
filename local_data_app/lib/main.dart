@@ -3,25 +3,25 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:local_data_app/model/enums.dart';
+import 'package:local_data_app/model/user_model.dart';
 import 'package:local_data_app/page/data_page.dart';
 import 'package:local_data_app/page/hive_demo_page.dart';
 import 'package:local_data_app/service/file_storage_service.dart';
 import 'package:local_data_app/service/locale_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'locator.dart';
 import 'service/shared_preferences_service.dart';
-
-GetIt locator = GetIt.instance;
-
-setupLocator() {
-  locator.registerSingleton<LocaleStorageService>(FileStorageService());
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
   await Hive.initFlutter();
+  Hive.registerAdapter(SehirAdapter());
+  Hive.registerAdapter(UserModelAdapter());
   await Hive.openBox("test");
+  await Hive.openBox<UserModel>("users");
   runApp(const MyApp());
 }
 

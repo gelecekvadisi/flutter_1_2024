@@ -1,5 +1,10 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'enums.dart';
 
+part "user_model.g.dart";
+
+@HiveType(typeId: 1)
 class UserModel {
   UserModel({
     required this.name,
@@ -8,9 +13,16 @@ class UserModel {
     required this.mezunMu,
   });
 
+  @HiveField(0)
   String name;
+
+  @HiveField(1)
   String renk;
+
+  @HiveField(2, defaultValue: [])
   List<Sehir> sehirler;
+
+  @HiveField(3)
   bool mezunMu;
 
   Map<String, dynamic> toJson() {
@@ -35,5 +47,10 @@ class UserModel {
           .toList(),
       mezunMu: json["mezunMu"],
     );
+  }
+
+  @override
+  String toString() {
+    return "name: $name  |  renk: $renk  |  sehirler: $sehirler  |  mezunMu: $mezunMu";
   }
 }
