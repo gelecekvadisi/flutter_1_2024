@@ -112,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(onPressed: () async {
                   await GoogleSignIn().signOut();
+                  await FirebaseAuth.instance.signOut();
                 }, child: Text("Google Sign Out")
                 ),
               ],

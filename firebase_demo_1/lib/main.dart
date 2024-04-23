@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_demo_1/firebase_options.dart';
+import 'package:firebase_demo_1/pages/firestore_page.dart';
 import 'package:firebase_demo_1/pages/login_page.dart';
 import 'package:firebase_demo_1/pages/manage_user_page.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: LoginPage(),
+      home: FirestorePage(),
     );
   }
 }
