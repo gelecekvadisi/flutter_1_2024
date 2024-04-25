@@ -9,10 +9,6 @@ class FirestorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Stream userDetailStream = firestore
-        .collection("user_detail")
-        .doc("joDZuu0lMf31h49MD49J")
-        .snapshots();
     return Scaffold(
       appBar: AppBar(
         title: Text("Flutter Firestore"),
@@ -22,11 +18,15 @@ class FirestorePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                _addData();
+              onPressed: () async {
+                await _addData();
+                await _querySnapshotDemo();
               },
               child: Text("Veri Ekle"),
             ),
+            ElevatedButton(onPressed: (){
+              _incrementCounter();
+            }, child: Text("Sayacı 1 artır")),
             ElevatedButton(
               onPressed: () {
                 _readData();
@@ -34,32 +34,36 @@ class FirestorePage extends StatelessWidget {
               child: Text("Veri Oku"),
             ),
             Divider(),
-            StreamBuilder(
-                stream: userDetailStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Bir hata meydana geldi!");
-                  }
-
-                  if (!snapshot.hasData || snapshot.data == null) {
-                    return Text("Dökümanda veri yok!");
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
-
-                  
-                    var docSnapshot = snapshot.data!;
-                    return Text(docSnapshot.data().toString());
-                  
-
-                  
-                })
+            _buildOneTimeDataText(),
           ],
         ),
       ),
     );
+  }
+
+  StreamBuilder<dynamic> _buildRealtimeDataText() {
+    Stream userDetailStream = firestore
+        .collection("user_detail")
+        .doc("joDZuu0lMf31h49MD49J")
+        .snapshots();
+    return StreamBuilder(
+        stream: userDetailStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("Bir hata meydana geldi!");
+          }
+
+          if (!snapshot.hasData || snapshot.data == null) {
+            return Text("Dökümanda veri yok!");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+
+          var docSnapshot = snapshot.data!;
+          return Text(docSnapshot.data().toString());
+        });
   }
 
   FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>
@@ -87,8 +91,10 @@ class FirestorePage extends StatelessWidget {
   }
 
   _addData() async {
-    DocumentReference<Map<String, dynamic>> docRef =
-        await firestore.collection("user_detail").add({
+    debugPrint("Veri ekle tıklandı!");
+    CollectionReference collectionRef = firestore.collection("user_detail");
+    DocumentReference docRef =
+        await collectionRef.add({
       "photo":
           "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
       "city": "Ankara",
@@ -102,6 +108,16 @@ class FirestorePage extends StatelessWidget {
       "date_of_registration": Timestamp.now()
     });
     debugPrint("Kullanıcı detay verisi kaydedildi!");
+
+    /////////////////////////////////////////////////////////
+
+    DocumentReference documentReference = collectionRef.doc("654323456");
+    // (await documentReference.get()).exists;
+    await documentReference.set({
+      "ad": "Furkan",
+      "soyad": "Yağmur",
+    });
+    debugPrint("Yeni döküman eklendi: ${documentReference.path}");
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> _readData() async {
@@ -109,5 +125,25 @@ class FirestorePage extends StatelessWidget {
         .collection("user_detail")
         .doc("joDZuu0lMf31h49MD49J")
         .get();
+  }
+
+  _querySnapshotDemo() async {
+    QuerySnapshot querySnapshot = await firestore.collection("user_detail").get();
+    List<DocumentChange> changeList = querySnapshot.docChanges;
+    debugPrint("Değişen döküman bilgileri:" + changeList[0].doc.data().toString());
+  }
+  
+  void _incrementCounter() async {
+    debugPrint("Sayaç artırılacak.");
+
+    DocumentReference docRef = firestore.collection("config").doc("counter");
+    if (!(await docRef.get()).exists) {
+      await docRef.set({"counter": 0});
+    }
+
+    await firestore.collection("config").doc("counter").update({
+      "tıklama_sayısı": FieldValue.increment(1),
+    });
+    debugPrint("Sayaç artırıldı.");
   }
 }
