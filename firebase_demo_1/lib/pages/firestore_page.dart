@@ -11,7 +11,7 @@ class FirestorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter Firestore"),
+        title: const Text("Flutter Firestore"),
       ),
       body: Center(
         child: Column(
@@ -22,18 +22,26 @@ class FirestorePage extends StatelessWidget {
                 await _addData();
                 await _querySnapshotDemo();
               },
-              child: Text("Veri Ekle"),
+              child: const Text("Veri Ekle"),
             ),
-            ElevatedButton(onPressed: (){
-              _incrementCounter();
-            }, child: Text("Sayacı 1 artır")),
+            ElevatedButton(
+              onPressed: () {
+                _incrementCounter();
+              },
+              child: const Text("Sayacı 1 artır"),
+            ),
             ElevatedButton(
               onPressed: () {
                 _readData();
               },
-              child: Text("Veri Oku"),
+              child: const Text("Veri Oku"),
             ),
-            Divider(),
+            ElevatedButton(
+                onPressed: () {
+                  _transactionDemo();
+                },
+                child: const Text("Transaction")),
+            const Divider(),
             _buildOneTimeDataText(),
           ],
         ),
@@ -50,15 +58,15 @@ class FirestorePage extends StatelessWidget {
         stream: userDetailStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text("Bir hata meydana geldi!");
+            return const Text("Bir hata meydana geldi!");
           }
 
           if (!snapshot.hasData || snapshot.data == null) {
-            return Text("Dökümanda veri yok!");
+            return const Text("Dökümanda veri yok!");
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
 
           var docSnapshot = snapshot.data!;
@@ -72,11 +80,11 @@ class FirestorePage extends StatelessWidget {
       future: _readData(),
       builder: ((context, snapshot) {
         if (snapshot.hasError) {
-          return Text("Bir hata meydana geldi!");
+          return const Text("Bir hata meydana geldi!");
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
-          return Text("Dökümanda veri yok!");
+          return const Text("Dökümanda veri yok!");
         }
 
         if (snapshot.connectionState == ConnectionState.done &&
@@ -85,7 +93,7 @@ class FirestorePage extends StatelessWidget {
           return Text(docSnapshot.data().toString());
         }
 
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       }),
     );
   }
@@ -93,8 +101,7 @@ class FirestorePage extends StatelessWidget {
   _addData() async {
     debugPrint("Veri ekle tıklandı!");
     CollectionReference collectionRef = firestore.collection("user_detail");
-    DocumentReference docRef =
-        await collectionRef.add({
+    DocumentReference docRef = await collectionRef.add({
       "photo":
           "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
       "city": "Ankara",
@@ -128,11 +135,13 @@ class FirestorePage extends StatelessWidget {
   }
 
   _querySnapshotDemo() async {
-    QuerySnapshot querySnapshot = await firestore.collection("user_detail").get();
+    QuerySnapshot querySnapshot =
+        await firestore.collection("user_detail").get();
     List<DocumentChange> changeList = querySnapshot.docChanges;
-    debugPrint("Değişen döküman bilgileri:" + changeList[0].doc.data().toString());
+    debugPrint(
+        "Değişen döküman bilgileri:" + changeList[0].doc.data().toString());
   }
-  
+
   void _incrementCounter() async {
     debugPrint("Sayaç artırılacak.");
 
@@ -145,5 +154,30 @@ class FirestorePage extends StatelessWidget {
       "tıklama_sayısı": FieldValue.increment(1),
     });
     debugPrint("Sayaç artırıldı.");
+  }
+
+  _transactionDemo() {
+    var firestore = FirebaseFirestore.instance;
+    var collectionRef = firestore.collection("user");
+
+    firestore.runTransaction((transaction) async {
+      var furkanDocRef = collectionRef.doc("0Gp3UC8rtVfObc89nPFUp6EWHXf2");
+      var osmanDocRef = collectionRef.doc("JCDZdAlqa9Y667WhCTWlovvWjDj2");
+
+      var furkan = await transaction.get(furkanDocRef);
+
+      transaction.update(furkanDocRef, {"bakiye": FieldValue.increment(-100)});
+
+      if (furkan.data()!["bakiye"] < 100) {
+        debugPrint("Furkanın bakiyesi yetersiz.");
+        throw Exception("Furkanın bakiyesi yetersiz.");
+      }
+
+      transaction.update(osmanDocRef, {"bakiye": FieldValue.increment(100)});
+    }).then((value) {
+      debugPrint("Güncelleme işlemi başarılı");
+    }).catchError((Exception e) {
+      debugPrint(e.toString());
+    });
   }
 }

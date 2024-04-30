@@ -27,7 +27,7 @@ class _FirestoreQueryDemoPageState extends State<FirestoreQueryDemoPage> {
                 onPressed: () {
                   firestore
                       .collection("user_detail")
-                      // .where("age", isGreaterThan: 25)
+                      .where("age", isGreaterThan: 25)
                       // .where("age", isLessThan: 25)
                       // .where("age", isNotEqualTo: 25)
                       .orderBy("city", descending: true)
