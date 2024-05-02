@@ -5,6 +5,7 @@ import 'package:firebase_demo_1/pages/firestore_page.dart';
 import 'package:firebase_demo_1/pages/firestore_query_demo_page.dart';
 import 'package:firebase_demo_1/pages/login_page.dart';
 import 'package:firebase_demo_1/pages/manage_user_page.dart';
+import 'package:firebase_demo_1/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: FirestorePage(),
+      home: RegisterPage(),
     );
   }
 }

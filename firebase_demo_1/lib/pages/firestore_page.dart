@@ -159,11 +159,11 @@ class FirestorePage extends StatelessWidget {
   _transactionDemo() {
     var firestore = FirebaseFirestore.instance;
     var collectionRef = firestore.collection("user");
+    
+    var furkanDocRef = collectionRef.doc("0Gp3UC8rtVfObc89nPFUp6EWHXf2");
+    var osmanDocRef = collectionRef.doc("JCDZdAlqa9Y667WhCTWlovvWjDj2");
 
     firestore.runTransaction((transaction) async {
-      var furkanDocRef = collectionRef.doc("0Gp3UC8rtVfObc89nPFUp6EWHXf2");
-      var osmanDocRef = collectionRef.doc("JCDZdAlqa9Y667WhCTWlovvWjDj2");
-
       var furkan = await transaction.get(furkanDocRef);
 
       transaction.update(furkanDocRef, {"bakiye": FieldValue.increment(-100)});
