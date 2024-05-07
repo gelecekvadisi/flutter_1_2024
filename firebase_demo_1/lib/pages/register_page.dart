@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -14,6 +15,11 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String? imageUrl;
+  File? imageFile;
+
+  String? userName, email, password;
+
+  GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -21,81 +27,141 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: const Text("Kaydol"),
       ),
-      body: Column(
-        children: [
-          _buildProfilePhoto(),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: _buildFields(),
-                ),
-                OutlinedButton(onPressed: () {}, child: const Text("Kaydol")),
-              ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          Size screenSize = MediaQuery.of(context).size;
+          return SingleChildScrollView(
+            child: Container(
+              height: screenSize.height,
+              color: Colors.red.shade100,
+              child: Column(
+                children: [
+                  _buildProfilePhoto(),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: _buildFields(),
+                        ),
+                        OutlinedButton(
+                            onPressed: () {
+                              _registerUser();
+                            },
+                            child: const Text("Kaydol")),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
+          );
+        }
+      ),
+    );
+  }
+
+  void _registerUser() async {
+    if (_formKey.currentState!.validate() && imageFile != null) {
+      _formKey.currentState!.save();
+
+      String userId = await _createUserOnFirebaseAuth(email!, password!);
+      await _savePhoto(userId, imageFile!);
+      await _createUserOnFirestore(userId: userId, userName: userName!);
+      debugPrint("Kullanıcını tüm verileri kaydedildi!");
+    }
+  }
+
+  Future<String> _createUserOnFirebaseAuth(
+      String email, String password) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    UserCredential credential = await auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    // credential.user!.updatePhotoURL(photoURL);
+    // auth.currentUser.photoURL;
+    return credential.user!.uid;
+  }
+
+  _createUserOnFirestore({
+    required String userId,
+    required String userName,
+  }) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore.collection("user_info").doc(userId).set({
+      "userName": userName,
+      "photoUrl": imageUrl,
+      "userId": userId,
+      "tc": "4789021342098",
+      "address": "Çobançeşme mah. Bahçelievler/İstanbul",
+    });
+  }
+
+  Widget _buildFields() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: "Kullanıcı adı",
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Bu alan boş bırakılamaz.";
+              }
+              return null;
+            },
+            onSaved: (value) {
+              userName = value;
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              labelText: "E-Posta",
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Bu alan boş bırakılamaz.";
+              } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                  .hasMatch(value)) {
+                return "Hatalı veya eksik e-posta girdiniz.";
+              }
+              return null;
+            },
+            onSaved: (value) {
+              email = value;
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: "Parola",
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Bu alan boş bırakılamaz.";
+              } else if (value.length < 6) {
+                return "Parola 6 karakterden kısa olamaz.";
+              }
+              return null;
+            },
+            onSaved: (value) {
+              password = value;
+            },
           ),
         ],
       ),
     );
   }
 
-  Column _buildFields() {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextField(
-          decoration: InputDecoration(
-            labelText: "Kullanıcı adı",
-          ),
-        ),
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: "E-Posta",
-          ),
-        ),
-        TextField(
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: "Parola",
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildProfilePhoto() {
     return InkWell(
       onTap: () async {
-        try {
-          var picker = ImagePicker();
-          var xFile = await picker.pickImage(source: ImageSource.gallery);
-
-          if (xFile == null) {
-            debugPrint("Dosya seçilmedi!");
-            return;
-          }
-
-          File file = File(xFile.path);
-          String dosyaUzantisi = file.path.split(".").last;
-          debugPrint("Seçilen dosya: ${file.path}");
-
-          var storage = FirebaseStorage.instance;
-          Reference fileReference =
-              storage.ref().child("profile_photo/user1.$dosyaUzantisi");
-          await fileReference.putFile(file);
-          debugPrint(
-              "Dosya Firebase'e yüklendi! Ref: ${fileReference.fullPath}");
-          imageUrl = await fileReference.getDownloadURL();
-          debugPrint("Resim url adresi: $imageUrl");
-
-          setState(() {});
-        } catch (e) {
-          debugPrint(e.toString());
-        }
+        _pickPhoto();
       },
       child: Container(
         width: 200,
@@ -106,19 +172,50 @@ class _RegisterPageState extends State<RegisterPage> {
             color: Colors.blue,
           ),
           borderRadius: BorderRadius.circular(20),
-          image: (imageUrl == null)
+          image: (imageFile == null)
               ? null
               : DecorationImage(
-                  image: NetworkImage(imageUrl!),
+                  image: FileImage(imageFile!),
                   fit: BoxFit.cover,
                 ),
         ),
-        child: (imageUrl == null)
+        child: (imageFile == null)
             ? const Center(
                 child: Text("Profil resmi"),
               )
             : null,
       ),
     );
+  }
+
+  _pickPhoto() async {
+    try {
+      var picker = ImagePicker();
+      XFile? xFile = await picker.pickImage(source: ImageSource.gallery);
+
+      if (xFile == null) {
+        debugPrint("Dosya seçilmedi!");
+        return;
+      }
+
+      imageFile = File(xFile.path);
+
+      setState(() {});
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  _savePhoto(String userId, File file) async {
+    String dosyaUzantisi = file.path.split(".").last;
+    debugPrint("Seçilen dosya: ${file.path}");
+
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference fileReference =
+        storage.ref().child("profile_photo/$userId.$dosyaUzantisi");
+    await fileReference.putFile(file);
+    debugPrint("Dosya Firebase'e yüklendi! Ref: ${fileReference.fullPath}");
+    imageUrl = await fileReference.getDownloadURL();
+    debugPrint("Resim url adresi: $imageUrl");
   }
 }
