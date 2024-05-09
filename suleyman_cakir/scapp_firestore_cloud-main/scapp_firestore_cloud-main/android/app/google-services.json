@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "631772242777",
+    "project_id": "scapp-firestore",
+    "storage_bucket": "scapp-firestore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631772242777:android:807e12bf361b7f3f0de248",
+        "android_client_info": {
+          "package_name": "com.example.scapp_firestore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRdQn1R6gJmYYO89udgOdI-2-g5Uh6BPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

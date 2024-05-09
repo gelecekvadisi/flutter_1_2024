@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -23,41 +25,38 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Kaydol"),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          Size screenSize = MediaQuery.of(context).size;
-          return SingleChildScrollView(
-            child: Container(
-              height: screenSize.height,
-              color: Colors.red.shade100,
-              child: Column(
-                children: [
-                  _buildProfilePhoto(),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: _buildFields(),
-                        ),
-                        OutlinedButton(
-                            onPressed: () {
-                              _registerUser();
-                            },
-                            child: const Text("Kaydol")),
-                      ],
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: screenSize.width,
+          height: screenSize.height,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _buildProfilePhoto(),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: _buildFields(),
                     ),
-                  ),
-                ],
+                    OutlinedButton(
+                        onPressed: () {
+                          _registerUser();
+                        },
+                        child: const Text("Kaydol")),
+                  ],
+                ),
               ),
-            ),
-          );
-        }
+            ],
+          ),
+        ),
       ),
     );
   }

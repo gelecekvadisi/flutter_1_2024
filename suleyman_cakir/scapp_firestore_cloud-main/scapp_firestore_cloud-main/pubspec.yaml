@@ -1,0 +1,40 @@
+name: scapp_firestore
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  cherry_toast: ^1.10.1
+  firebase_auth: ^4.19.4
+  firebase_cloud_firestore: ^4.15.8
+  firebase_core: ^2.30.1
+  firebase_storage: ^11.7.4
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+  google_sign_in: ^6.2.1
+  image_picker: ^1.1.1
+  intl: ^0.18.1
+  lottie: ^3.1.0
+  svg_flutter: ^0.0.1
+  animated_splash_screen: ^1.3.0
+  page_transition: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/svg/
+    - assets/lottie/
+    - assets/splash/
