@@ -33,18 +33,18 @@ class _NFollowPageState extends State<NFollowPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        backgroundColor: Colors.blue.shade200,
-        elevation: 5,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddPage()),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   shape: const CircleBorder(),
+      //   backgroundColor: Colors.blue.shade200,
+      //   elevation: 5,
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => const AddPage()),
+      //     );
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('posts')

@@ -1,3 +1,5 @@
+import 'package:animations_demo/page/animation_page.dart';
+import 'package:animations_demo/page/staggered_animation_page.dart';
 import 'package:flutter/material.dart';
 
 import 'page/basic_animation_page.dart';
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: BasicAnimationPage(),
+      home: StaggeredAnimationPage(),
     );
   }
 }

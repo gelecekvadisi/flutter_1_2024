@@ -38,6 +38,11 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       
       drawer: MyDrawer(
         currentIndex: _currentIndex,
@@ -50,7 +55,8 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
       body: Center(
         child: _widgetOptions.elementAt(_currentIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomAppBar(
+        
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

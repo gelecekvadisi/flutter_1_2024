@@ -24,7 +24,7 @@ class _BasicAnimationPageState extends State<BasicAnimationPage>
       vsync: this,
       lowerBound: 0.0,
       upperBound: 1.0,
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 5),
     );
 
     animationController.forward();
@@ -59,12 +59,12 @@ class _BasicAnimationPageState extends State<BasicAnimationPage>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: animationController.value*32),
+              padding: EdgeInsets.only(left: animationController.value * 32),
               child: Opacity(
                 opacity: animationController.value,
                 child: Container(
-                  height: (animationController.value*100) +100,
-                  width: (animationController.value*100) +100,
+                  height: (animationController.value * 100) + 100,
+                  width: (animationController.value * 100) + 100,
                   color: Colors.green,
                 ),
               ),
