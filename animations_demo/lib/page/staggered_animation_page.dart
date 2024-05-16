@@ -15,10 +15,12 @@ class _StaggeredAnimationPageState extends State<StaggeredAnimationPage>
   late Animation heightAnimation;
   late Animation radiusAnimation;
   late Animation colorAnimation;
+  late TextEditingController textController;
 
   @override
   void initState() {
     super.initState();
+    textController = TextEditingController();
     animationController = AnimationController(vsync: this, duration: Duration(seconds: 2));
     opacityAnimation = Tween(
       begin: 0.0,
@@ -72,6 +74,7 @@ class _StaggeredAnimationPageState extends State<StaggeredAnimationPage>
   @override
   void dispose() {
     animationController.dispose();
+    textController.dispose();
     super.dispose();
   }
 

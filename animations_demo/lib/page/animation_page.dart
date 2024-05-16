@@ -26,18 +26,17 @@ class _AnimationPageState extends State<AnimationPage>
     super.initState();
     sizeController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 5),
     );
 
-    sizeAnimation = Tween(
-      begin: 100.0,
-      end: 300.0,
-    ).animate(
-      CurvedAnimation(
-        parent: sizeController,
-        curve: Curves.easeInOutExpo,
-      ),
-    );
+    sizeAnimation = Tween<Color>(
+      // begin: 100.0,
+      // end: 300.0,
+      begin: Colors.red,
+      end: Colors.blue,
+    ).animate(CurvedAnimation(parent: sizeController, curve: Curves.easeInOutQuart));
+
+    // sizeAnimation = CurveTween(curve: Curves.bounceIn).animate(sizeController);
 
     colorAnimation = ColorTween(
       begin: Colors.red,
