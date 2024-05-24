@@ -5,6 +5,20 @@ import 'providers.dart';
 import 'widgets/counter_text.dart';
 import 'widgets/my_floating_action_button.dart';
 
+// final titleProvider = Provider((ref) {
+//   return "Material App Title";
+// });
+
+// final numberProvider = StateProvider<int>((ref) => 0);
+
+// final futureProvider = FutureProvider((ref) async {
+//   return 5;
+// });
+
+// final streamProvider = StreamProvider((ref) {
+//   return Stream.value(5);
+// });
+
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }

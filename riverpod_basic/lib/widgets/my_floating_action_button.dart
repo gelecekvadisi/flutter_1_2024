@@ -15,6 +15,7 @@ class MyFloatingActionButton extends StatelessWidget {
       return FloatingActionButton(
         onPressed: () {
           ref.read(counterProvider.notifier).state++;
+          ref.read(counterNotifierProvider.notifier).arttir();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
